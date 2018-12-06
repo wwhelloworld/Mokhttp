@@ -144,6 +144,18 @@ public class MyOkHttp {
     /**
      * get 请求
      *
+     * @param context
+     * @param url      url
+     * @param params   参数
+     * @param callback 回调
+     */
+    public void get(Context context, final String url, final Map<String, String> params, final Callback callback) {
+        get(null, url, params, callback);
+    }
+
+    /**
+     * get 请求
+     *
      * @param context         发起请求的context
      * @param url             url
      * @param params          参数
