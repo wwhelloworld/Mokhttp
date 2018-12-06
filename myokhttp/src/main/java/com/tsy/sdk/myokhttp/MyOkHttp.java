@@ -185,13 +185,11 @@ public class MyOkHttp {
     /**
      * get 请求
      *
-     * @param context
      * @param url      url
-     * @param params   参数
      * @param callback 回调
      */
-    public void getbyte(Context context, final String url, final Map<String, String> params, final Callback callback) {
-        getbyte(null, url, params, callback);
+    public void getbyte(final String url, final Callback callback) {
+        getbyte(null, url, callback);
     }
 
     /**
@@ -478,8 +476,6 @@ public class MyOkHttp {
         public void onResponse(Call call, final Response response) throws IOException {
             if (response.isSuccessful()) {
                 final String response_body = response.body().string();
-                final byte[] response_byte = response.body().bytes();
-
                 if (mResponseHandler instanceof JsonResponseHandler) {       //json回调
                     try {
                         final JSONObject jsonBody = new JSONObject(response_body);
@@ -524,7 +520,7 @@ public class MyOkHttp {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            ((ByteResponseHandler) mResponseHandler).onSuccess(response.code(), response_byte);
+                            ((ByteResponseHandler) mResponseHandler).onSuccess(response.code(), response);
                         }
                     });
                 }

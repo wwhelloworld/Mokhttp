@@ -8,7 +8,7 @@ import okhttp3.Response;
  */
 public abstract class ByteResponseHandler implements IResponseHandler {
 
-    public abstract void onSuccess(int statusCode, byte[] response);
+    public abstract void onSuccess(int statusCode, Response response);
 
     @Override
     public void onProgress(long currentBytes, long totalBytes) {
