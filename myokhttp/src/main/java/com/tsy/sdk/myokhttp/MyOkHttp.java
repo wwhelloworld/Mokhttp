@@ -141,17 +141,6 @@ public class MyOkHttp {
         get(null, url, params, responseHandler);
     }
 
-    /**
-     * get 请求
-     *
-     * @param context
-     * @param url      url
-     * @param params   参数
-     * @param callback 回调
-     */
-    public void get(Context context, final String url, final Map<String, String> params, final Callback callback) {
-        get(null, url, params, callback);
-    }
 
     /**
      * get 请求
@@ -190,6 +179,42 @@ public class MyOkHttp {
         }
 
         client.newCall(request).enqueue(new MyCallback(new Handler(), responseHandler));
+    }
+
+
+    /**
+     * get 请求
+     *
+     * @param context
+     * @param url      url
+     * @param params   参数
+     * @param callback 回调
+     */
+    public void getbyte(Context context, final String url, final Map<String, String> params, final Callback callback) {
+        getbyte(null, url, params, callback);
+    }
+
+    /**
+     * get 请求
+     *
+     * @param context  发起请求的context
+     * @param url      url
+     * @param callback 回调
+     */
+    public void getbyte(Context context, final String url, final Callback callback) {
+        Request request;
+        //发起request
+        if (context == null) {
+            request = new Request.Builder()
+                    .url(url)
+                    .build();
+        } else {
+            request = new Request.Builder()
+                    .url(url)
+                    .tag(context)
+                    .build();
+        }
+        client.newCall(request).enqueue(callback);
     }
 
     /**
