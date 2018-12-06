@@ -441,6 +441,7 @@ public class MyOkHttp {
         public void onResponse(Call call, final Response response) throws IOException {
             if (response.isSuccessful()) {
                 final String response_body = response.body().string();
+                final byte[] response_byte = response.body().bytes();
 
                 if (mResponseHandler instanceof JsonResponseHandler) {       //json回调
                     try {
@@ -482,11 +483,11 @@ public class MyOkHttp {
                             ((RawResponseHandler) mResponseHandler).onSuccess(response.code(), response_body);
                         }
                     });
-                } else if (mResponseHandler instanceof ByteResponseHandler) {     //raw字符串回调
+                } else if (mResponseHandler instanceof ByteResponseHandler) {     //BYTE字节回调
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            ((ByteResponseHandler) mResponseHandler).onSuccess(response.code(), response);
+                            ((ByteResponseHandler) mResponseHandler).onSuccess(response.code(), response_byte);
                         }
                     });
                 }
