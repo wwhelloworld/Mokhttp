@@ -153,17 +153,22 @@ public class MyOkHttp {
      * @param responseHandler 回调
      */
     public void get(Context context, final String url, final Map<String, String> params, final IResponseHandler responseHandler) {
-//        //拼接url
+        //拼接url
+        String get_url = url;
+        if (params != null && params.size() > 0) {
+            int i = 0;
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                if (i++ == 0) {
+                    get_url = get_url + "?" + entry.getKey() + "=" + entry.getValue();
+                } else {
+                    get_url = get_url + "&" + entry.getKey() + "=" + entry.getValue();
+                }
+            }
+        }
+
 //        String get_url = url;
 //        if (params != null && params.size() > 0) {
-//            int i = 0;
-//            for (Map.Entry<String, String> entry : params.entrySet()) {
-//                if (i++ == 0) {
-//                    get_url = get_url + "?" + entry.getKey() + "=" + entry.getValue();
-//                } else {
-//                    get_url = get_url + "&" + entry.getKey() + "=" + entry.getValue();
-//                }
-//            }
+//            get_url = url + "?" + convertToGet(params);
 //        }
 
         Request request;
@@ -171,11 +176,11 @@ public class MyOkHttp {
         //发起request
         if (context == null) {
             request = new Request.Builder()
-                    .url(url + "?" + convertToGet(params))
+                    .url(get_url)
                     .build();
         } else {
             request = new Request.Builder()
-                    .url(url + "?" + convertToGet(params))
+                    .url(get_url)
                     .tag(context)
                     .build();
         }
