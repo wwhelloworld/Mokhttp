@@ -25,8 +25,10 @@ import java.io.InputStream;
 import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -151,25 +153,25 @@ public class MyOkHttp {
      * @param responseHandler 回调
      */
     public void get(Context context, final String url, final Map<String, String> params, final IResponseHandler responseHandler) {
-        //拼接url
-        String get_url = url;
-        if (params != null && params.size() > 0) {
-            int i = 0;
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                if (i++ == 0) {
-                    get_url = get_url + "?" + entry.getKey() + "=" + entry.getValue();
-                } else {
-                    get_url = get_url + "&" + entry.getKey() + "=" + entry.getValue();
-                }
-            }
-        }
+//        //拼接url
+//        String get_url = url;
+//        if (params != null && params.size() > 0) {
+//            int i = 0;
+//            for (Map.Entry<String, String> entry : params.entrySet()) {
+//                if (i++ == 0) {
+//                    get_url = get_url + "?" + entry.getKey() + "=" + entry.getValue();
+//                } else {
+//                    get_url = get_url + "&" + entry.getKey() + "=" + entry.getValue();
+//                }
+//            }
+//        }
 
         Request request;
 
         //发起request
         if (context == null) {
             request = new Request.Builder()
-                    .url(url)
+                    .url(url + "?" + convertToGet(params))
                     .build();
         } else {
             request = new Request.Builder()
@@ -181,6 +183,34 @@ public class MyOkHttp {
         client.newCall(request).enqueue(new MyCallback(new Handler(), responseHandler));
     }
 
+    /**
+     * 将参数转换成get形式
+     *
+     * @param params
+     * @return
+     */
+    private String convertToGet(Map<String, String> params) {
+        List<String> list = new ArrayList<>();
+        Set<String> keys = params.keySet();
+        for (String key : keys) {
+            list.add(key + "=" + params.get(key));
+        }
+        return join(list, "&");
+    }
+
+    public String join(Collection<? extends Object> collection, String separator) {
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+
+        for (Object object : collection) {
+            sb.append(object.toString());
+            if (i < collection.size() - 1) {
+                sb.append(separator);
+            }
+            i++;
+        }
+        return sb.toString();
+    }
 
     /**
      * get 请求
