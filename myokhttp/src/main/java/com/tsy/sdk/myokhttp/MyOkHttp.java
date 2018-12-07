@@ -175,7 +175,7 @@ public class MyOkHttp {
                     .build();
         } else {
             request = new Request.Builder()
-                    .url(url)
+                    .url(url + "?" + convertToGet(params))
                     .tag(context)
                     .build();
         }
