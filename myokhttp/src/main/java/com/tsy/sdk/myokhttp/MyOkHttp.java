@@ -133,6 +133,53 @@ public class MyOkHttp {
     }
 
     /**
+     * post 请求
+     *
+     * @param context         发起请求的context
+     * @param url             url
+     * @param mJsonParams     参数
+     * @param responseHandler 回调
+     */
+    public void postjson(Context context, final String url, String mJsonParams, final IResponseHandler responseHandler) {
+        //post builder 参数
+
+//
+//        FormBody.Builder builder = new FormBody.Builder();
+//        if (params != null && params.size() > 0) {
+//            for (Map.Entry<String, String> entry : params.entrySet()) {
+//                builder.add(entry.getKey(), entry.getValue());
+//            }
+//        }
+//
+//        Request request;
+//
+//        //发起request
+//        if (context == null) {
+//            request = new Request.Builder()
+//                    .url(url)
+//                    .post(builder.build())
+//                    .build();
+//        } else {
+//            request = new Request.Builder()
+//                    .url(url)
+//                    .post(builder.build())
+//                    .tag(context)
+//                    .build();
+//        }
+
+        Request.Builder builder = new Request.Builder().url(url);
+
+        if (mJsonParams.length() > 0) {
+            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), mJsonParams);
+            builder.post(body);
+        }
+
+        Request request = builder.build();
+
+        client.newCall(request).enqueue(new MyCallback(new Handler(), responseHandler));
+    }
+
+    /**
      * get 请求
      *
      * @param url             url
